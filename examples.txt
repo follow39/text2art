@@ -1,0 +1,19 @@
+examples
+
+1. Just print your text:
+--- text2art::print("Test text for example", Font::new(BasicFonts::Bubble), std::io::stdio());
+
+2. Make Printer variable with basic font:
+--- let prntr: Printer = Printer::new().set_font(BasicFonts::Bubble).set_stream(std::io::stdio());
+--- prntr.print("First test text for example");
+--- prntr.print("Second test text for example");
+
+3. Make Printer variable with external font from string:
+let prntr: Printer = Printer::new().set_font(Font::new(some_string)).set_stream(std::io::stdio());
+prntr.print("First test text for example");
+prntr.print("Second test text for example");
+
+4. Make Printer variable with external font from file:
+let prntr: Printer = Printer::new().set_font(Font::new(file)).set_stream(std::io::stdio());
+prntr.print("First test text for example");
+prntr.print("Second test text for example");
