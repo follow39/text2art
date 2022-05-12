@@ -5,16 +5,17 @@ mod printer;
 
 #[cfg(test)]
 mod tests {
-    use crate::basic_fonts;
+    use crate::{basic_fonts, font::Font, printer::Printer};
 
     #[test]
     fn it_works() {
-        let a = basic_fonts::BUBBLE_FILE;
-        eprintln!("{:?}", &a);
+        let prntr = Printer::new().set_font(Font::new(basic_fonts::BasicFonts::Bubble).unwrap());
+        prntr.print("TEST");
+        // let a = basic_fonts::BUBBLE_FILE;
+        // eprintln!("{:?}", &a);
         let result = 2 + 2;
         assert_eq!(result, 4);
     }
 }
 
 pub fn artprint() {}
-

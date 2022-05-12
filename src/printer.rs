@@ -1,6 +1,5 @@
-use std::fmt;
-
 // use crate::basic_fonts;
+use unicode_segmentation::UnicodeSegmentation;
 
 // mod basic_fonts;
 // mod font;
@@ -9,36 +8,34 @@ use crate::basic_fonts::*;
 use crate::font::*;
 
 pub struct Printer {
-    text: String,
     font: Font,
+    // stream: stream
 }
 
 impl Printer {
     pub fn new() -> Printer {
         Printer {
-            text: String::from("text"),
-            font: Font::new(BasicFonts::Bubble),
+            font: Font::new(BasicFonts::Bubble).unwrap(),
         }
     }
-    fn text(&self) -> &str {
-        &self.text
-    }
-    fn font(&self) -> &Font {
+    pub fn font(&self) -> &Font {
         &self.font
     }
-    fn set_text(&mut self, text: &str) -> &mut Printer {
+    pub fn set_font(mut self, font: Font) -> Printer {
+        self.font = font;
         self
     }
-    fn set_font(&mut self, font: Font) -> &mut Printer {
-        self
-    }
-    fn render(&self) -> String {
-        String::new()
-    }
-}
-
-impl fmt::Display for Printer {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.render())
+    // fn set_stream(&mut self, stream: stream) -> &mut Printer {
+    //     self
+    // }
+    pub fn print(&self, text: &str) {
+        println!("Art print");
+        let mut text_with_font: Vec<&str> = Vec::new();
+        for grapheme in text.graphemes(true) {
+            text_with_font.push(self.font.get(grapheme).unwrap())
+        }
+        print!("{:?}", text_with_font);
+        println!();
+        println!("Art print");
     }
 }
