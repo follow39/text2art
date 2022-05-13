@@ -1,40 +1,39 @@
 use crate::art_symbol::*;
 use crate::basic_fonts::*;
-use std::collections::HashMap;
-use unicode_segmentation::UnicodeSegmentation;
-use std::result;
 use regex::Regex;
-
+use std::collections::HashMap;
+use std::result;
+use unicode_segmentation::UnicodeSegmentation;
 
 pub struct Font {
-    graphemes: HashMap<String, String>,
-    height: usize
+    graphemes: HashMap<String, ArtSymbol>,
 }
 
 impl Font {
     pub fn new(basic_font: BasicFonts) -> Result<Font, &'static str> {
-        let mut graphemes: HashMap<String, String> = HashMap::new();
-        // for line in BUBBLE_FONT_FILE.lines() {
-        for line in TEST_FONT_FILE.lines() {
-            let (key, value) = Font::parse_line(line)?;
-            graphemes.insert(String::from(key), String::from(value));
+        let mut graphemes: HashMap<String, ArtSymbol> = HashMap::new();
+        let data = String::from(TEST_FONT_FILE);
+        for line in data.lines() {
+            let (symbol, data, shift) = Font::parse_line(line)?;
+            graphemes.insert(String::from(symbol), ArtSymbol::new(symbol, data, shift));
         }
-        Ok(Font { graphemes , height: 3})
+        Ok(Font { graphemes })
     }
 
-    fn parse_line(line: &str) -> Result<(String, String), &str> {
+    fn parse_line(line: &str) -> Result<(&str, &str, usize), &'static str> {
         // let re = Regex::new(r"'{\*}':{\*}!0").unwrap();
         // println!("{:?}", re.find(line).unwrap());
-        let line_parsed = line.splitn(2, ':').collect::<Vec<&str>>();
-        let key = line_parsed[0].split('\'').collect::<Vec<&str>>()[1];
-        let value = line_parsed[1].splitn(2, "!0").collect::<Vec<&str>>()[0];
-        Ok((String::from(key), String::from(value)))
+        let line_parsed = line.splitn(3, ':').collect::<Vec<&str>>();
+        let symbol = line_parsed[0].split('\'').collect::<Vec<&str>>()[1];
+        let shift = line_parsed[1].parse::<usize>().unwrap();
+        let value = line_parsed[2];
+        Ok((symbol, value, shift))
     }
 
-    pub fn get<'a>(&'a self, grapheme: &str) -> Result<&'a str, String> {
+    pub fn get(&self, grapheme: &str) -> Result<&ArtSymbol, String> {
         match self.graphemes.get(grapheme) {
             Some(value) => Ok(value),
-            None => Err(format!("Grapheme \'{}\' not exist!", grapheme))
+            None => Err(format!("Grapheme \'{}\' not exist!", grapheme)),
         }
     }
 }
