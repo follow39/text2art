@@ -30,12 +30,6 @@ impl ArtSymbol {
             empty_line: " ".repeat(width as usize),
         }
     }
-    // pub(crate) fn width(&self) -> usize {
-    //     self.width
-    // }
-    // pub(crate) fn height(&self) -> u32 {
-    //     self.height
-    // }
     pub(crate) fn depth(&self) -> i32 {
         self.depth
     }
@@ -99,6 +93,7 @@ mod tests {
         assert_eq!(asym.get_line(2), "line_1");
         assert_eq!(asym.get_line(3), "      ");
     }
+
     #[test]
     fn test_art_symbol_with_positive_shift() {
         let test_symbol = "a";
