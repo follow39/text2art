@@ -2,6 +2,10 @@
 name = "text2art"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+description = "Simple library for translate text to ascii art."
+repository = "https://github.com/follow39/text2art"
+keywords = ["cli"]
 
 [dependencies]
 unicode-segmentation = "1.9.0"

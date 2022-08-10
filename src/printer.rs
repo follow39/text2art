@@ -1,8 +1,6 @@
 use unicode_segmentation::UnicodeSegmentation;
-
 use crate::art_symbol::ArtSymbol;
 use crate::font;
-use std::cmp;
 
 pub struct Printer {
     font: font::Font,
@@ -48,38 +46,5 @@ impl Printer {
             text_with_font.push(font.get(grapheme).unwrap());
         }
         text_with_font
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::{basic_fonts, font::Font, printer::Printer};
-
-    #[test]
-    fn it_works() {
-        let font = match Font::from_basic(basic_fonts::BasicFonts::Big) {
-            Ok(font) => font,
-            Err(_) => panic!("something wrong with font"),
-        };
-        let prntr = Printer::new(font);
-        // let prntr = Printer::new(Font::from_basic(basic_fonts::BasicFonts::Big, &mut std::io::stdout()));
-        // prntr.print("AaBbCcDdEeFfGg", &mut std::io::stdout());
-        // prntr.print("HhIiJjKkLlMmNn", &mut std::io::stdout());
-        // prntr.print("OoPpQqRrSsTtUu", &mut std::io::stdout());
-        // prntr.print("VvWwXxYyZz", &mut std::io::stdout());
-        // prntr.print("q p q p", &mut std::io::stdout());
-        // prntr.print("aqb0123456789", &mut std::io::stdout());
-        // prntr.print("aqb!?.,\"\':a;", &mut std::io::stdout());
-        // prntr.print("aqb(abg)[abg]{abg}", &mut std::io::stdout());
-        // prntr.print("aqb+-*", &mut std::io::stdout());
-        // prntr.print("aqb\\dev|dev/dev", &mut std::io::stdout());
-        // prntr.print("aqb<=>", &mut std::io::stdout());
-        // prntr.print("aqb#$%&@a^a_a`a~", &mut std::io::stdout());
-        // prntr.print("abs", &mut std::io::stdout());
-
-        // let a = basic_fonts::BUBBLE_FILE;
-        // eprintln!("{:?}", &a);
-        let result = 2 + 2;
-        assert_eq!(result, 4);
     }
 }

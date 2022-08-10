@@ -1,23 +1,10 @@
-mod art_symbol;
-mod basic_fonts;
-mod font;
-mod printer;
+pub(crate) mod basic_fonts;
+pub(crate) mod font;
+pub(crate) mod printer;
+pub(crate) mod art_symbol;
+
 
 pub use crate::printer::Printer;
+pub use crate::font::Font;
+pub use crate::basic_fonts::BasicFonts;
 
-pub fn artprint() {}
-
-// #[cfg(test)]
-// mod tests {
-//     use crate::{basic_fonts, font::Font, printer::Printer};
-
-//     #[test]
-//     fn it_works() {
-//         let prntr = Printer::new().set_font(Font::new(basic_fonts::BasicFonts::Bubble).unwrap());
-//         prntr.print("TEST");
-//         // let a = basic_fonts::BUBBLE_FILE;
-//         // eprintln!("{:?}", &a);
-//         let result = 2 + 2;
-//         assert_eq!(result, 4);
-//     }
-// }
