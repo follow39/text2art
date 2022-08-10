@@ -11,8 +11,10 @@ impl Font {
     pub fn from_basic(font: basic_fonts::BasicFonts) -> Result<Font, String> {
         Font::new(basic_fonts::get_font_data_string(&font))
     }
+
     // pub fn from_file(path: std::path::Path) -> Result<Font, String> {
     // }
+
     fn new(data: String) -> Result<Font, String> {
         let mut graphemes: HashMap<String, art_symbol::ArtSymbol> = HashMap::new();
         for line in data.lines() {

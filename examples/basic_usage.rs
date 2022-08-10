@@ -1,7 +1,6 @@
-
-use text2art::Printer;
-use text2art::Font;
 use text2art::BasicFonts;
+use text2art::Font;
+use text2art::Printer;
 
 fn main() {
     let font = match Font::from_basic(BasicFonts::Big) {

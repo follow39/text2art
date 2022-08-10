@@ -1,6 +1,6 @@
-use unicode_segmentation::UnicodeSegmentation;
 use crate::art_symbol::ArtSymbol;
 use crate::font;
+use unicode_segmentation::UnicodeSegmentation;
 
 pub struct Printer {
     font: font::Font,
@@ -10,6 +10,7 @@ impl Printer {
     pub fn new(font: font::Font) -> Printer {
         Printer { font }
     }
+
     pub fn print<T: std::io::Write>(
         &self,
         text: &str,

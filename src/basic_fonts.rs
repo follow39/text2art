@@ -7,7 +7,6 @@ pub enum BasicFonts {
     Block,
     Big,
     Banner,
-    Bubble,
 }
 
 static BLOCK_FONT_FILE: &'static str = include_str!("../src/fonts/block_font.txt");
