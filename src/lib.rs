@@ -5,4 +5,6 @@ pub(crate) mod printer;
 
 pub use crate::basic_fonts::BasicFonts;
 pub use crate::font::Font;
+pub use crate::font::FontError;
 pub use crate::printer::Printer;
+pub use crate::printer::PrinterError;

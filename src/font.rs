@@ -3,15 +3,23 @@ use crate::basic_fonts;
 use regex::Regex;
 use std::collections::HashMap;
 
+#[derive(Debug)]
 pub enum FontError {
     Io(std::io::Error),
-    Parse(String),
+    Regex(regex::Error),
+    ParseLine(String),
     Get(String),
 }
 
 impl From<std::io::Error> for FontError {
     fn from(err: std::io::Error) -> FontError {
         FontError::Io(err)
+    }
+}
+
+impl From<regex::Error> for FontError {
+    fn from(err: regex::Error) -> FontError {
+        FontError::Regex(err)
     }
 }
 
@@ -28,7 +36,7 @@ impl Font {
         Font::from_string(std::fs::read_to_string(path)?)
     }
 
-    fn from_string(data: String) -> Result<Font, FontError> {
+    pub fn from_string(data: String) -> Result<Font, FontError> {
         let mut graphemes: HashMap<String, art_symbol::ArtSymbol> = HashMap::new();
         for line in data.lines() {
             let trim_line = line.trim_end(); // delete whitespaces after data
@@ -45,16 +53,41 @@ impl Font {
     }
 
     fn parse_line(line: &str) -> Result<(&str, &str, i32), FontError> {
-        let re = Regex::new(r"'(.)':(-?\d*):([\s\S].*)").unwrap();
+        let re = Regex::new(r"'(.)':(-?\d*):(.*)")?;
         match re.find(line) {
             Some(mat) => {
-                let cap = re.captures(mat.as_str()).unwrap();
-                let symbol = cap.get(1).unwrap().as_str();
-                let shift = cap.get(2).unwrap().as_str().parse::<i32>().unwrap();
-                let value = cap.get(3).unwrap().as_str();
+                let cap = re
+                    .captures(mat.as_str())
+                    .ok_or(FontError::ParseLine(format!(
+                        "Wrong line in font input \"{}\"",
+                        line
+                    )))?;
+                let symbol = cap
+                    .get(1)
+                    .ok_or(FontError::ParseLine(format!(
+                        "Wrong line in font input \"{}\"",
+                        line
+                    )))?
+                    .as_str();
+                let shift = cap
+                    .get(2)
+                    .ok_or(FontError::ParseLine(format!(
+                        "Wrong line in font input \"{}\"",
+                        line
+                    )))?
+                    .as_str()
+                    .parse::<i32>()
+                    .unwrap();
+                let value = cap
+                    .get(3)
+                    .ok_or(FontError::ParseLine(format!(
+                        "Wrong line in font input \"{}\"",
+                        line
+                    )))?
+                    .as_str();
                 Ok((symbol, value, shift))
             }
-            None => Err(FontError::Parse(format!(
+            None => Err(FontError::ParseLine(format!(
                 "Wrong line in font input \"{}\"",
                 line
             ))),
@@ -69,5 +102,48 @@ impl Font {
                 grapheme
             ))),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::font;
+
+    #[test]
+    fn test_parse_line_correct() {
+        let line = "\'a\':0:line_0\\nline_1\\n";
+        let expected = ("a", "line_0\\nline_1\\n", 0);
+        assert!(font::Font::parse_line(line).is_ok());
+        assert_eq!(expected, font::Font::parse_line(line).unwrap());
+
+        let line = "\'a\':123:line_0\\nline_1\\n";
+        let expected = ("a", "line_0\\nline_1\\n", 123);
+        assert!(font::Font::parse_line(line).is_ok());
+        assert_eq!(expected, font::Font::parse_line(line).unwrap());
+
+        let line = "\'a\':-34:line_0\\nline_1\\n";
+        let expected = ("a", "line_0\\nline_1\\n", -34);
+        assert!(font::Font::parse_line(line).is_ok());
+        assert_eq!(expected, font::Font::parse_line(line).unwrap());
+
+        let line = "\'a\':0:\\n";
+        let expected = ("a", "\\n", 0);
+        assert!(font::Font::parse_line(line).is_ok());
+        assert_eq!(expected, font::Font::parse_line(line).unwrap());
+    }
+
+    #[test]
+    fn test_parse_line_uncorrect() {
+        let line = "a:0:line_0\\nline_1\\n";
+        assert!(font::Font::parse_line(line).is_err());
+
+        let line = "\'a\':line_0\\nline_1\\n";
+        assert!(font::Font::parse_line(line).is_err());
+
+        let line = "\'a\':b:line_0\\nline_1\\n";
+        assert!(font::Font::parse_line(line).is_err());
+
+        // let line = "\'a\':0:line_0\\nline_1";
+        // assert!(font::Font::parse_line(line).is_err());
     }
 }

@@ -61,7 +61,7 @@ mod tests {
     #[test]
     fn test_art_symbol_simple() {
         let test_symbol = "a";
-        let test_data = r"line_0\nline_1\n";
+        let test_data = "line_0\\nline_1\\n";
         let test_shift = 0i32;
         let asym = art_symbol::ArtSymbol::new(test_symbol, test_data, test_shift);
 
@@ -78,7 +78,7 @@ mod tests {
     #[test]
     fn test_art_symbol_with_negative_shift() {
         let test_symbol = "a";
-        let test_data = r"line_0\nline_1\n";
+        let test_data = "line_0\\nline_1\\n";
         let test_shift = -1i32;
         let asym = art_symbol::ArtSymbol::new(test_symbol, test_data, test_shift);
 
@@ -95,7 +95,7 @@ mod tests {
     #[test]
     fn test_art_symbol_with_positive_shift() {
         let test_symbol = "a";
-        let test_data = r"line_0\nline_1\n";
+        let test_data = "line_0\\nline_1\\n";
         let test_shift = 1i32;
         let asym = art_symbol::ArtSymbol::new(test_symbol, test_data, test_shift);
 
