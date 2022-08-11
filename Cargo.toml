@@ -2,7 +2,12 @@
 name = "text2art"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+license = "MIT"
+description = "Simple library for translate text to ascii art."
+repository = "https://github.com/follow39/text2art"
+keywords = ["cli"]
 
 [dependencies]
+unicode-segmentation = "1.9.0"
+regex = "1.6.0"
+lazy_static = "1.4.0"
