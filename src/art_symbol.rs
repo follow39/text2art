@@ -3,7 +3,6 @@ use std::hash::{Hash, Hasher};
 #[derive(PartialEq, Eq)]
 pub(crate) struct ArtSymbol {
     width: u32,
-    height: u32,
     depth: i32,
     shift: i32,
     symbol: String,
@@ -14,11 +13,9 @@ pub(crate) struct ArtSymbol {
 impl ArtSymbol {
     pub(crate) fn new(symbol: &str, data: &str, shift: i32) -> ArtSymbol {
         let width: u32 = data.find("\\n").unwrap() as u32;
-        let height: u32 = data.matches("\\n").count() as u32;
         let depth: i32 = data.matches("\\n").count() as i32 - shift;
         ArtSymbol {
             width,
-            height,
             depth,
             shift,
             symbol: String::from(symbol),
@@ -30,14 +27,6 @@ impl ArtSymbol {
             empty_line: " ".repeat(width as usize),
         }
     }
-
-    // pub(crate) fn width(&self) -> usize {
-    //     self.width
-    // }
-
-    // pub(crate) fn height(&self) -> u32 {
-    //     self.height
-    // }
 
     pub(crate) fn depth(&self) -> i32 {
         self.depth
@@ -78,7 +67,6 @@ mod tests {
 
         assert_eq!(asym.symbol, test_symbol);
         assert_eq!(asym.shift, test_shift);
-        assert_eq!(asym.height, 2);
         assert_eq!(asym.depth, 2);
         assert_eq!(asym.lines.len(), 2);
         assert_eq!(asym.get_line(-1), "      ");
@@ -96,7 +84,6 @@ mod tests {
 
         assert_eq!(asym.symbol, test_symbol);
         assert_eq!(asym.shift, test_shift);
-        assert_eq!(asym.height, 2u32);
         assert_eq!(asym.depth, 2 - test_shift);
         assert_eq!(asym.lines.len(), 2);
         assert_eq!(asym.get_line(0), "      ");
@@ -114,7 +101,6 @@ mod tests {
 
         assert_eq!(asym.symbol, test_symbol);
         assert_eq!(asym.shift, test_shift);
-        assert_eq!(asym.height, 2);
         assert_eq!(asym.depth, 2 - test_shift);
         assert_eq!(asym.lines.len(), 2);
         assert_eq!(asym.get_line(-2), "      ");

@@ -7,7 +7,7 @@ fn main() {
         Ok(font) => font,
         Err(_) => panic!("something wrong with font"),
     };
-    let prntr = Printer::new(font);
+    let prntr = Printer::with_font(font);
     prntr.print("AaBbCcDdEeFfGg", &mut std::io::stdout());
     prntr.print("HhIiJjKkLlMmNn", &mut std::io::stdout());
     prntr.print("OoPpQqRrSsTtUu", &mut std::io::stdout());
