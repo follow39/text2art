@@ -9,9 +9,9 @@ pub enum BasicFonts {
     Banner,
 }
 
-static BLOCK_FONT_FILE: &'static str = include_str!("../src/fonts/block_font.txt");
-static BANNER_FONT_FILE: &'static str = include_str!("../src/fonts/banner_font.txt");
-static BIG_FONT_FILE: &'static str = include_str!("../src/fonts/big_font.txt");
+static BLOCK_FONT_FILE: &'static str = include_str!("../fonts/block_font.txt");
+static BANNER_FONT_FILE: &'static str = include_str!("../fonts/banner_font.txt");
+static BIG_FONT_FILE: &'static str = include_str!("../fonts/big_font.txt");
 
 lazy_static! {
     static ref BASIC_FONTS_DATA: HashMap<BasicFonts, &'static str> = {
