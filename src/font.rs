@@ -107,7 +107,10 @@ impl Font {
 
 #[cfg(test)]
 mod tests {
+    use std::collections::HashMap;
+
     use crate::font;
+    use crate::art_symbol;
 
     #[test]
     fn test_parse_line_correct() {
@@ -145,5 +148,33 @@ mod tests {
 
         // let line = "\'a\':0:line_0\\nline_1";
         // assert!(font::Font::parse_line(line).is_err());
+    }
+
+    #[test]
+    fn test_from_string() {
+        let font_data = "#test font data\n\'a\':0:line_0\\nline_1\\n\n\'b\':0:line_0\\nline_1\\n";
+        let graphemes_expected: HashMap<String, art_symbol::ArtSymbol> = HashMap::from([
+            (String::from("a"), art_symbol::ArtSymbol::new("a", "line_0\\nline_1\\n", 0)),
+            (String::from("b"), art_symbol::ArtSymbol::new("b", "line_0\\nline_1\\n", 0)),
+        ]);
+        let font_result = font::Font::from_string(font_data.to_string());
+        assert!(font_result.is_ok());
+        assert_eq!(graphemes_expected, font_result.unwrap().graphemes);
+    }
+
+    #[test]
+    fn test_get() {
+        let font_data = "#test font data\n\'a\':0:line_0\\nline_1\\n\n\'b\':0:line_0\\nline_1\\n";
+        let grapheme_1 = art_symbol::ArtSymbol::new("a", "line_0\\nline_1\\n", 0);
+        let grapheme_2 = art_symbol::ArtSymbol::new("b", "line_0\\nline_1\\n", 0);
+        let font = font::Font::from_string(font_data.to_string()).unwrap();
+        let get_result = font.get("a");
+        assert!(get_result.is_ok());
+        assert_eq!(grapheme_1, *get_result.unwrap());
+        let get_result = font.get("b");
+        assert!(get_result.is_ok());
+        assert_eq!(grapheme_2, *get_result.unwrap());
+        let get_result = font.get("c");
+        assert!(get_result.is_err());
     }
 }
