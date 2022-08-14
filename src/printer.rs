@@ -39,10 +39,7 @@ impl Printer {
         Ok(())
     }
 
-    pub fn print_to_stdio(
-        &self,
-        text: &str,
-    ) -> Result<(), PrinterError> {
+    pub fn print_to_stdio(&self, text: &str) -> Result<(), PrinterError> {
         std::io::stdout().write(self.render_text(text)?.as_bytes())?;
         Ok(())
     }

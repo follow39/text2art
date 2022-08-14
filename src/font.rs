@@ -169,7 +169,7 @@ mod tests {
                 art_symbol::ArtSymbol::new("b", "line_0\\nline_1\\n", 0),
             ),
         ]);
-        let font_result = font::Font::from_string(font_data.to_string());
+        let font_result = font::Font::from_string(font_data);
         assert!(font_result.is_ok());
         assert_eq!(graphemes_expected, font_result.unwrap().graphemes);
     }
@@ -179,7 +179,7 @@ mod tests {
         let font_data = "\'a\':0:line_0\\nline_1\\n\n\'b\':0:line_0\\nline_1\\n";
         let grapheme_1 = art_symbol::ArtSymbol::new("a", "line_0\\nline_1\\n", 0);
         let grapheme_2 = art_symbol::ArtSymbol::new("b", "line_0\\nline_1\\n", 0);
-        let font = font::Font::from_string(font_data.to_string()).unwrap();
+        let font = font::Font::from_string(font_data).unwrap();
         let get_result = font.get("a");
         assert!(get_result.is_ok());
         assert_eq!(grapheme_1, *get_result.unwrap());
@@ -203,7 +203,7 @@ mod tests {
                 art_symbol::ArtSymbol::new("b", "line_0\\nline_1\\n", 0),
             ),
         ]);
-        let font_result = font::Font::from_string(font_data.to_string());
+        let font_result = font::Font::from_string(font_data);
         assert!(font_result.is_ok());
         assert_eq!(graphemes_expected, font_result.unwrap().graphemes);
     }
