@@ -7,6 +7,7 @@ use std::collections::HashMap;
 pub enum FontError {
     Io(std::io::Error),
     Regex(regex::Error),
+    ParseInt(std::num::ParseIntError),
     ParseLine(String),
     Get(String),
 }
@@ -23,24 +24,30 @@ impl From<regex::Error> for FontError {
     }
 }
 
+impl From<std::num::ParseIntError> for FontError {
+    fn from(err: std::num::ParseIntError) -> FontError {
+        FontError::ParseInt(err)
+    }
+}
+
 pub struct Font {
     graphemes: HashMap<String, art_symbol::ArtSymbol>,
 }
 
 impl Font {
     pub fn from_basic(font: basic_fonts::BasicFonts) -> Result<Font, FontError> {
-        Font::from_string(basic_fonts::get_font_data_string(&font))
+        Font::from_string(&basic_fonts::get_font_data_string(&font))
     }
 
     pub fn from_file<P: AsRef<std::path::Path>>(path: P) -> Result<Font, FontError> {
-        Font::from_string(std::fs::read_to_string(path)?)
+        Font::from_string(&std::fs::read_to_string(path)?)
     }
 
-    pub fn from_string(data: String) -> Result<Font, FontError> {
+    pub fn from_string(data: &str) -> Result<Font, FontError> {
         let mut graphemes: HashMap<String, art_symbol::ArtSymbol> = HashMap::new();
         for line in data.lines() {
             let trim_line = line.trim_end(); // delete whitespaces after data
-            if trim_line.trim().is_empty() || trim_line.chars().nth(0).unwrap().eq(&'#') {
+            if trim_line.is_empty() || trim_line.as_bytes()[0].eq(&('#' as u8)) {
                 continue;
             }
             let (symbol, data, shift) = Font::parse_line(trim_line)?;
@@ -76,8 +83,7 @@ impl Font {
                         line
                     )))?
                     .as_str()
-                    .parse::<i32>()
-                    .unwrap();
+                    .parse::<i32>()?;
                 let value = cap
                     .get(3)
                     .ok_or(FontError::ParseLine(format!(

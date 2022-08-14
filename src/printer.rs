@@ -1,3 +1,5 @@
+use std::io::Write;
+
 use crate::art_symbol::ArtSymbol;
 use crate::font::{self, FontError};
 use unicode_segmentation::UnicodeSegmentation;
@@ -28,12 +30,20 @@ impl Printer {
         Printer { font }
     }
 
-    pub fn print(
+    pub fn print_to(
         &self,
         text: &str,
-        output_stream: &mut impl std::io::Write,
+        output_stream: &mut dyn std::io::Write,
     ) -> Result<(), PrinterError> {
         output_stream.write(self.render_text(text)?.as_bytes())?;
+        Ok(())
+    }
+
+    pub fn print_to_stdio(
+        &self,
+        text: &str,
+    ) -> Result<(), PrinterError> {
+        std::io::stdout().write(self.render_text(text)?.as_bytes())?;
         Ok(())
     }
 

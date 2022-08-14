@@ -23,6 +23,6 @@ lazy_static! {
     };
 }
 
-pub(crate) fn get_font_data_string(basic_font: &BasicFonts) -> String {
-    String::from(*BASIC_FONTS_DATA.get(&basic_font).unwrap())
+pub(crate) fn get_font_data_string(basic_font: &BasicFonts) -> &str {
+    BASIC_FONTS_DATA.get(&basic_font).unwrap()
 }
