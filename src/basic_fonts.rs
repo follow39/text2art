@@ -5,14 +5,10 @@ pub enum BasicFonts {
     Banner,
 }
 
-const BLOCK_FONT_FILE: &'static str = include_str!("../fonts/block_font.txt");
-const BANNER_FONT_FILE: &'static str = include_str!("../fonts/banner_font.txt");
-const BIG_FONT_FILE: &'static str = include_str!("../fonts/big_font.txt");
-
 pub(crate) fn get_font_data_string(basic_font: &BasicFonts) -> &str {
     match basic_font {
-        BasicFonts::Big => BIG_FONT_FILE,
-        BasicFonts::Banner => BANNER_FONT_FILE,
-        BasicFonts::Block => BLOCK_FONT_FILE,
+        BasicFonts::Big => include_str!("../fonts/big_font.txt"),
+        BasicFonts::Banner => include_str!("../fonts/banner_font.txt"),
+        BasicFonts::Block => include_str!("../fonts/block_font.txt"),
     }
 }
