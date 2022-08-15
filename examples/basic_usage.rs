@@ -8,10 +8,12 @@ fn main() {
         Err(_) => panic!("something wrong with font"),
     };
     let prntr = Printer::with_font(font);
-    prntr.print_to_stdio("Welcome to tex2art! :)");
+    prntr.print_to_stdio("Welcome to tex2art! :)").ok();
 
-    prntr.print_to_stdio("text for print_to_stdio");
-    prntr.print_to("text for print_to", &mut std::io::stdout());
+    prntr.print_to_stdio("text for print_to_stdio").ok();
+    prntr
+        .print_to("text for print_to", &mut std::io::stdout())
+        .ok();
 
     let rendered_text = prntr.render_text("text for render");
     match rendered_text {

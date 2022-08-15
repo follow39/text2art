@@ -8,13 +8,13 @@ fn main() {
         Err(_) => panic!("something wrong with font"),
     };
     let prntr = Printer::with_font(font);
-    prntr.print_to_stdio("AaBbCcDdEeFfGg");
-    prntr.print_to_stdio("HhIiJjKkLlMmNn");
-    prntr.print_to_stdio("OoPpQqRrSsTtUu");
-    prntr.print_to_stdio("VvWwXxYyZz");
-    prntr.print_to_stdio("S p a c e s");
-    prntr.print_to_stdio("0123456789");
-    prntr.print_to_stdio("!?.,\"\':;()[]{}");
-    prntr.print_to_stdio("+-*\\|/<=>");
-    prntr.print_to_stdio("#$%&@^_`~");
+    prntr.print_to_stdio("AaBbCcDdEeFfGg").ok();
+    prntr.print_to_stdio("HhIiJjKkLlMmNn").ok();
+    prntr.print_to_stdio("OoPpQqRrSsTtUu").ok();
+    prntr.print_to_stdio("VvWwXxYyZz").ok();
+    prntr.print_to_stdio("S p a c e s").ok();
+    prntr.print_to_stdio("0123456789").ok();
+    prntr.print_to_stdio("!?.,\"\':;()[]{}").ok();
+    prntr.print_to_stdio("+-*\\|/<=>").ok();
+    prntr.print_to_stdio("#$%&@^_`~").ok();
 }

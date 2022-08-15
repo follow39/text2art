@@ -4,6 +4,7 @@ use crate::art_symbol::ArtSymbol;
 use crate::font::{self, FontError};
 use unicode_segmentation::UnicodeSegmentation;
 
+#[derive(Debug)]
 pub enum PrinterError {
     Io(std::io::Error),
     Font(FontError),
