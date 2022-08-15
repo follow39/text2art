@@ -1,5 +1,3 @@
-use std::io::Write;
-
 use crate::art_symbol::ArtSymbol;
 use crate::font::{self, FontError};
 use unicode_segmentation::UnicodeSegmentation;
@@ -36,13 +34,30 @@ impl Printer {
         text: &str,
         output_stream: &mut dyn std::io::Write,
     ) -> Result<(), PrinterError> {
-        output_stream.write(self.render_text(text)?.as_bytes())?;
+        if text.is_empty() {
+            return Ok(());
+        }
+        let text_with_font = {
+            let mut text_with_font: Vec<&ArtSymbol> = Vec::with_capacity(text.len());
+            for grapheme in text.graphemes(true) {
+                text_with_font.push(self.font.get(grapheme)?);
+            }
+            text_with_font
+        };
+        let max_depth: i32 = text_with_font.iter().map(|x| x.depth()).max().unwrap();
+        let max_shift: i32 = text_with_font.iter().map(|x| x.shift()).max().unwrap();
+        for line in -max_shift..(max_depth as i32) {
+            for grapheme in &text_with_font {
+                output_stream.write(grapheme.get_line(line).as_bytes())?;
+            }
+            output_stream.write("\n".as_bytes())?;
+        }
+        output_stream.write("\n".as_bytes())?;
         Ok(())
     }
 
     pub fn print_to_stdio(&self, text: &str) -> Result<(), PrinterError> {
-        std::io::stdout().write(self.render_text(text)?.as_bytes())?;
-        Ok(())
+        self.print_to(text, &mut std::io::stdout())
     }
 
     pub fn render_text(&self, text: &str) -> Result<String, PrinterError> {
