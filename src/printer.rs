@@ -73,6 +73,21 @@ mod tests {
     use crate::printer;
 
     #[test]
+    fn test_print_to_empty() {
+        let expected_output = "";
+        let font = match font::Font::from_basic(basic_fonts::BasicFonts::Big) {
+            Ok(font) => font,
+            Err(_) => panic!("something wrong with font"),
+        };
+        let mut printer_output_buf = Vec::<u8>::new();
+        let test_text = "";
+        let prntr = printer::Printer::with_font(font);
+        prntr.print_to(test_text, &mut printer_output_buf).ok();
+
+        assert_eq!(expected_output.as_bytes(), printer_output_buf);
+    }
+
+    #[test]
     fn test_print_to_basic() {
         #[rustfmt::skip]
         let expected_output = concat!(
@@ -89,7 +104,6 @@ mod tests {
         };
         let mut printer_output_buf = Vec::<u8>::new();
         let test_text = "Test text";
-
         let prntr = printer::Printer::with_font(font);
         prntr.print_to(test_text, &mut printer_output_buf).ok();
 
@@ -109,7 +123,21 @@ mod tests {
     fn test_print_to_with_custom_newline() {}
 
     #[test]
-    fn test_render() {
+    fn test_render_empty() {
+        let expected_output = "";
+        let font = match font::Font::from_basic(basic_fonts::BasicFonts::Big) {
+            Ok(font) => font,
+            Err(_) => panic!("something wrong with font"),
+        };
+        let test_text = "";
+        let prntr = printer::Printer::with_font(font);
+        let redndered_str = prntr.render_text(test_text).ok();
+
+        assert!(redndered_str.is_some());
+        assert_eq!(expected_output, redndered_str.unwrap());
+    }
+    #[test]
+    fn test_render_basic() {
         #[rustfmt::skip]
         let expected_output = concat!(
             r" _______             _       _                _   ", "\n",
@@ -124,7 +152,6 @@ mod tests {
             Err(_) => panic!("something wrong with font"),
         };
         let test_text = "Test text";
-
         let prntr = printer::Printer::with_font(font);
         let redndered_str = prntr.render_text(test_text).ok();
 
