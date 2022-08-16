@@ -8,13 +8,19 @@ fn main() {
         Err(_) => panic!("something wrong with font"),
     };
     let prntr = Printer::with_font(font);
-    prntr.print_to_stdio("AaBbCcDdEeFfGg").ok();
-    prntr.print_to_stdio("HhIiJjKkLlMmNn").ok();
-    prntr.print_to_stdio("OoPpQqRrSsTtUu").ok();
-    prntr.print_to_stdio("VvWwXxYyZz").ok();
-    prntr.print_to_stdio("S p a c e s").ok();
-    prntr.print_to_stdio("0123456789").ok();
-    prntr.print_to_stdio("!?.,\"\':;()[]{}").ok();
-    prntr.print_to_stdio("+-*\\|/<=>").ok();
-    prntr.print_to_stdio("#$%&@^_`~").ok();
+
+    #[rustfmt::skip]
+    let big_font_symbols = concat!(
+        "AaBbCcDdEeFfGg", "\n",
+        "HhIiJjKkLlMmNn", "\n",
+        "OoPpQqRrSsTtUu", "\n",
+        "VvWwXxYyZz", "\n",
+        "S p a c e s", "\n",
+        "0123456789", "\n",
+        "!?.,\"\':;()[]{}", "\n",
+        "+-*\\|/<=>", "\n",
+        "#$%&@^_`~", "\n",
+    );
+
+    prntr.print_to_stdio(big_font_symbols).ok();
 }
