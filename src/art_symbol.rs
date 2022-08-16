@@ -18,7 +18,7 @@ impl ArtSymbol {
             width,
             depth,
             shift,
-            symbol: String::from(symbol),
+            symbol: symbol.to_owned(),
             lines: data
                 .split("\\n")
                 .filter(|&x| !x.is_empty())
@@ -26,6 +26,10 @@ impl ArtSymbol {
                 .collect(),
             empty_line: " ".repeat(width as usize),
         }
+    }
+
+    pub(crate) fn width(&self) -> u32 {
+        self.width
     }
 
     pub(crate) fn depth(&self) -> i32 {
