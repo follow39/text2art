@@ -9,6 +9,8 @@ fn main() {
     };
     let prntr = Printer::with_font(font);
 
+    prntr.print_to_stdio("tex2art").ok();
+
     #[rustfmt::skip]
     let big_font_symbols = concat!(
         "AaBbCcDdEeFfGg", "\n",
