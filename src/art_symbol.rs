@@ -1,6 +1,6 @@
 use std::hash::{Hash, Hasher};
 
-#[derive(PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq)]
 pub(crate) struct ArtSymbol {
     width: u32,
     depth: i32,

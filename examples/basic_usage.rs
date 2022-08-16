@@ -8,13 +8,16 @@ fn main() {
         Err(_) => panic!("something wrong with font"),
     };
     let prntr = Printer::with_font(font);
-    prntr.print("AaBbCcDdEeFfGg", &mut std::io::stdout());
-    prntr.print("HhIiJjKkLlMmNn", &mut std::io::stdout());
-    prntr.print("OoPpQqRrSsTtUu", &mut std::io::stdout());
-    prntr.print("VvWwXxYyZz", &mut std::io::stdout());
-    prntr.print("S p a c e s", &mut std::io::stdout());
-    prntr.print("0123456789", &mut std::io::stdout());
-    prntr.print("!?.,\"\':;()[]{}", &mut std::io::stdout());
-    prntr.print("+-*\\|/<=>", &mut std::io::stdout());
-    prntr.print("#$%&@^_`~", &mut std::io::stdout());
+    prntr.print_to_stdio("Welcome to tex2art! :)").ok();
+
+    prntr.print_to_stdio("text for print_to_stdio").ok();
+    prntr
+        .print_to("text for print_to", &mut std::io::stdout())
+        .ok();
+
+    let rendered_text = prntr.render_text("text for render");
+    match rendered_text {
+        Ok(rendered_text) => println!("{}", rendered_text),
+        Err(_) => println!("Something went wrong!"),
+    }
 }
