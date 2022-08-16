@@ -65,7 +65,8 @@ impl Printer {
             for line in -max_shift..(max_depth as i32) {
                 for grapheme in &text_with_font_line {
                     match &self.fill_grapheme {
-                        Some(x) => output_stream.write(grapheme.get_line(line).replace(" ", x).as_bytes())?,
+                        Some(x) => output_stream
+                            .write(grapheme.get_line(line).replace(" ", x).as_bytes())?,
                         None => output_stream.write(grapheme.get_line(line).as_bytes())?,
                     };
                 }
