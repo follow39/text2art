@@ -120,6 +120,12 @@ impl Font {
             ))),
         }
     }
+
+    pub fn get_symbols_list(&self) -> Vec<String> {
+        let mut list = self.graphemes.iter().map(|x| x.0.to_owned()).collect::<Vec<String>>();
+        list.sort();
+        list
+    }
 }
 
 #[cfg(test)]

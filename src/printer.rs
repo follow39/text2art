@@ -33,6 +33,10 @@ impl Printer {
         }
     }
 
+    pub fn font(&self) -> &font::Font {
+        &self.font
+    }
+
     pub fn set_fill_grapheme(mut self, grapheme: Option<String>) -> Self {
         self.fill_grapheme = grapheme;
         self
