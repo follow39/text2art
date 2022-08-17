@@ -12,7 +12,12 @@ pub(crate) struct ArtSymbol {
 
 impl ArtSymbol {
     pub(crate) fn new(symbol: &str, data: &str, shift: i32) -> ArtSymbol {
-        let width: u32 = data.find("\\n").unwrap() as u32;
+        let width: u32 = data
+            .split("\\n")
+            .filter(|&x| !x.is_empty())
+            .map(str::len)
+            .max()
+            .unwrap() as u32;
         let depth: i32 = data.matches("\\n").count() as i32 - shift;
         ArtSymbol {
             width,
