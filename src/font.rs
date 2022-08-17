@@ -122,7 +122,11 @@ impl Font {
     }
 
     pub fn get_symbols_list(&self) -> Vec<String> {
-        let mut list = self.graphemes.iter().map(|x| x.0.to_owned()).collect::<Vec<String>>();
+        let mut list = self
+            .graphemes
+            .iter()
+            .map(|x| x.0.to_owned())
+            .collect::<Vec<String>>();
         list.sort();
         list
     }
@@ -244,7 +248,6 @@ mod tests {
         let font_result = font::Font::from_string(font_data);
         assert!(font_result.is_ok());
         assert_eq!(graphemes_expected, font_result.unwrap().graphemes);
-
 
         let font_data = "'a\':0:666666\\n666666\\n\n\'b\':0:666666\\n666666\\n";
         let default_space_len = 3;
