@@ -46,7 +46,7 @@ impl Font {
     pub fn from_string(data: &str) -> Result<Font, FontError> {
         let mut graphemes: HashMap<String, art_symbol::ArtSymbol> = HashMap::new();
         for line in data.lines() {
-            // let trim_line = line.trim_end(); // delete whitespaces after data
+            let line = line.trim_end(); // delete whitespaces after data
             if line.trim_end().is_empty() || line.as_bytes()[0].eq(&('#' as u8)) {
                 continue;
             }
