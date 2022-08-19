@@ -1,4 +1,4 @@
-#[derive(PartialEq, Eq, Clone, Hash)]
+#[derive(Debug, PartialEq, Eq, Clone, Hash)]
 pub enum BasicFonts {
     Alligator,
     Arrows,
