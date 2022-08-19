@@ -33,6 +33,10 @@ impl Printer {
         }
     }
 
+    pub fn font(&self) -> &font::Font {
+        &self.font
+    }
+
     pub fn set_fill_grapheme(mut self, grapheme: Option<String>) -> Self {
         self.fill_grapheme = grapheme;
         self
@@ -60,9 +64,13 @@ impl Printer {
             text_with_font
         };
         for text_with_font_line in text_with_font {
-            let max_depth: i32 = text_with_font_line.iter().map(|x| x.depth()).max().unwrap();
-            let max_shift: i32 = text_with_font_line.iter().map(|x| x.shift()).max().unwrap();
-            for line in -max_shift..(max_depth as i32) {
+            let min_shift: i32 = text_with_font_line.iter().map(|x| x.shift()).min().unwrap();
+            let max_elevationt: i32 = text_with_font_line
+                .iter()
+                .map(|x| (x.height() as i32 + x.shift()))
+                .max()
+                .unwrap();
+            for line in (min_shift..max_elevationt).rev() {
                 for grapheme in &text_with_font_line {
                     match &self.fill_grapheme {
                         Some(x) => output_stream
@@ -154,6 +162,31 @@ mod tests {
         };
         let mut printer_output_buf = Vec::<u8>::new();
         let test_text = "Test\nTest";
+        let prntr = printer::Printer::with_font(font);
+        prntr.print_to(test_text, &mut printer_output_buf).ok();
+
+        assert_eq!(expected_output.as_bytes(), printer_output_buf);
+    }
+
+    #[test]
+    fn test_print_to_with_shift() {
+        #[rustfmt::skip]
+        let expected_output = concat!(
+            r"  _____        ", "\n",
+            r" / ____|       ", "\n",
+            r"| |  __   __ _ ", "\n",
+            r"| | |_ | / _` |", "\n",
+            r"| |__| || (_| |", "\n",
+            r" \_____| \__, |", "\n",
+            r"          __/ |", "\n",
+            r"         |___/ ", "\n",
+        );
+        let font = match font::Font::from_basic(basic_fonts::BasicFonts::Big) {
+            Ok(font) => font,
+            Err(_) => panic!("something wrong with font"),
+        };
+        let mut printer_output_buf = Vec::<u8>::new();
+        let test_text = "Gg";
         let prntr = printer::Printer::with_font(font);
         prntr.print_to(test_text, &mut printer_output_buf).ok();
 

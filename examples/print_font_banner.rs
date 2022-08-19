@@ -17,7 +17,7 @@ fn main() {
         "HhIiJjKkLlMmNn", "\n",
         "OoPpQqRrSsTtUu", "\n",
         "VvWwXxYyZz", "\n",
-        "S p a c e s", "\n",
+        "s p a c e s", "\n",
         "0123456789", "\n",
         "!?.,\"\':;()[]{}", "\n",
         "+-*\\|/<=>", "\n",

@@ -46,7 +46,7 @@ impl Font {
     pub fn from_string(data: &str) -> Result<Font, FontError> {
         let mut graphemes: HashMap<String, art_symbol::ArtSymbol> = HashMap::new();
         for line in data.lines() {
-            // let trim_line = line.trim_end(); // delete whitespaces after data
+            let line = line.trim_end(); // delete whitespaces after data
             if line.trim_end().is_empty() || line.as_bytes()[0].eq(&('#' as u8)) {
                 continue;
             }
@@ -120,6 +120,16 @@ impl Font {
             ))),
         }
     }
+
+    pub fn get_symbols_list(&self) -> Vec<String> {
+        let mut list = self
+            .graphemes
+            .iter()
+            .map(|x| x.0.to_owned())
+            .collect::<Vec<String>>();
+        list.sort();
+        list
+    }
 }
 
 #[cfg(test)]
@@ -162,9 +172,6 @@ mod tests {
 
         let line = "\'a\':b:line_0\\nline_1\\n";
         assert!(font::Font::parse_line(line).is_err());
-
-        // let line = "\'a\':0:line_0\\nline_1";
-        // assert!(font::Font::parse_line(line).is_err());
     }
 
     #[test]
@@ -223,14 +230,40 @@ mod tests {
 
     #[test]
     fn test_default_space() {
-        let font_data = "";
-        let graphemes_expected: HashMap<String, art_symbol::ArtSymbol> = HashMap::from([(
-            String::from(" "),
-            art_symbol::ArtSymbol::new(" ", " \\n", 0),
-        )]);
+        let font_data = "'a\':0:line_0\\nline_1\\n\n\'b\':0:line_0\\nline_1\\n";
+        let graphemes_expected: HashMap<String, art_symbol::ArtSymbol> = HashMap::from([
+            (
+                String::from(" "),
+                art_symbol::ArtSymbol::new(" ", "   \\n", 0),
+            ),
+            (
+                String::from("a"),
+                art_symbol::ArtSymbol::new("a", "line_0\\nline_1\\n", 0),
+            ),
+            (
+                String::from("b"),
+                art_symbol::ArtSymbol::new("b", "line_0\\nline_1\\n", 0),
+            ),
+        ]);
         let font_result = font::Font::from_string(font_data);
         assert!(font_result.is_ok());
         assert_eq!(graphemes_expected, font_result.unwrap().graphemes);
+
+        let font_data = "'a\':0:666666\\n666666\\n\n\'b\':0:666666\\n666666\\n";
+        let default_space_len = 3;
+        let font_result = font::Font::from_string(font_data);
+        assert_eq!(
+            default_space_len,
+            font_result.unwrap().graphemes.get(" ").unwrap().width()
+        );
+
+        let font_data = "'a\':0:22\\n22\\n\n\'b\':0:666666\\n666666\\n";
+        let default_space_len = 3;
+        let font_result = font::Font::from_string(font_data);
+        assert_eq!(
+            default_space_len,
+            font_result.unwrap().graphemes.get(" ").unwrap().width()
+        );
     }
 
     #[test]
