@@ -59,7 +59,7 @@ impl Font {
         let default_space = format!(
             "{}{}",
             std::iter::repeat(" ")
-                // .take((graphemes.iter().map(|x| x.1.width()).max().unwrap_or(1).div_ceil(2)) as usize)
+                // .take((graphemes.iter().map(|x| x.1.width()).max().unwrap_or(1).div_ceil(2)) as usize) FOR FUTURE
                 .take(((graphemes.iter().map(|x| x.1.width()).max().unwrap_or(1) + 1) / 2) as usize)
                 .collect::<String>(),
             "\\n"

@@ -30,7 +30,7 @@ fn main() {
         "OldItalic" => BasicFonts::OldItalic,
         _ => {
             println!("Font not found");
-            return ;
+            return;
         }
     };
     println!("");
@@ -40,7 +40,6 @@ fn main() {
         Err(_) => panic!("something wrong with font"),
     };
     let prntr = Printer::with_font(font);
-
 
     for sym in &prntr.font().get_symbols_list() {
         println!("Origin:");
