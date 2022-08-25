@@ -17,10 +17,10 @@
 </div>
 
 ---
+
 **Description**
-<p align="left">
+
 Simple library for translating text into ascii art. The library has several fonts at once, and the user can use their fonts from a file or string.<br> 
-</p>
 
 ---
 
@@ -32,6 +32,12 @@ text2art = "1.0.0"
 ---
 
 **Example**
+
+Run
+~~~
+cargo run --example basic_usage
+~~~
+Code
 ~~~
 use text2art::BasicFonts;
 use text2art::Font;
