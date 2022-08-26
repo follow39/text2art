@@ -188,7 +188,7 @@ Grapheme with positive shift
 Internal parameters:
 Width - 5
 Height - 3
-Shift - 2
+Shift - 3
  </pre>
 All examples in one structure
 <pre>
