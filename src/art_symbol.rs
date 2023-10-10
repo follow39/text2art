@@ -30,7 +30,6 @@ impl ArtSymbol {
                 .into_iter()
                 .rev()
                 .filter(|&x| !x.is_empty())
-                .into_iter()
                 .map(str::to_string)
                 .collect::<Vec<String>>(),
             empty_line: " ".repeat(width as usize),
