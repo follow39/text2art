@@ -8,5 +8,5 @@ repository = "https://github.com/follow39/text2art"
 keywords = ["cli"]
 
 [dependencies]
-unicode-segmentation = "1.9.0"
-regex = "1.6.0"
+regex = "1.10.*"
+unicode-segmentation = "1.10.*"
