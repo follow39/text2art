@@ -52,8 +52,8 @@ impl Printer {
         }
         let text_with_font = {
             let mut text_with_font: Vec<Vec<&art_symbol::ArtSymbol>> =
-                Vec::with_capacity(text.split("\n").count());
-            for text_line in text.split("\n").filter(|&x| !x.is_empty()) {
+                Vec::with_capacity(text.split('\n').count());
+            for text_line in text.split('\n').filter(|&x| !x.is_empty()) {
                 let mut text_with_font_line: Vec<&art_symbol::ArtSymbol> =
                     Vec::with_capacity(text_line.len());
                 for grapheme in text_line.graphemes(true) {
@@ -74,11 +74,11 @@ impl Printer {
                 for grapheme in &text_with_font_line {
                     match &self.fill_grapheme {
                         Some(x) => output_stream
-                            .write(grapheme.get_line(line).replace(" ", x).as_bytes())?,
+                            .write(grapheme.get_line(line).replace(' ', x).as_bytes())?,
                         None => output_stream.write(grapheme.get_line(line).as_bytes())?,
                     };
                 }
-                output_stream.write("\n".as_bytes())?;
+                output_stream.write_all("\n".as_bytes())?;
             }
         }
         Ok(())

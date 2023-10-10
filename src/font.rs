@@ -36,7 +36,7 @@ pub struct Font {
 
 impl Font {
     pub fn from_basic(font: basic_fonts::BasicFonts) -> Result<Font, FontError> {
-        Font::from_string(&basic_fonts::get_font_data_string(&font))
+        Font::from_string(basic_fonts::get_font_data_string(&font))
     }
 
     pub fn from_file<P: AsRef<std::path::Path>>(path: P) -> Result<Font, FontError> {
@@ -47,7 +47,7 @@ impl Font {
         let mut graphemes: HashMap<String, art_symbol::ArtSymbol> = HashMap::new();
         for line in data.lines() {
             let line = line.trim_end(); // delete whitespaces after data
-            if line.trim_end().is_empty() || line.as_bytes()[0].eq(&('#' as u8)) {
+            if line.trim_end().is_empty() || line.as_bytes()[0].eq(&(b'#')) {
                 continue;
             }
             let (symbol, data, shift) = Font::parse_line(line)?;
@@ -58,10 +58,9 @@ impl Font {
         }
         let default_space = format!(
             "{}{}",
-            std::iter::repeat(" ")
-                // .take((graphemes.iter().map(|x| x.1.width()).max().unwrap_or(1).div_ceil(2)) as usize) FOR FUTURE
-                .take(((graphemes.iter().map(|x| x.1.width()).max().unwrap_or(1) + 1) / 2) as usize)
-                .collect::<String>(),
+            " ".repeat(
+                ((graphemes.iter().map(|x| x.1.width()).max().unwrap_or(1) + 1) / 2) as usize // TODO use `div_ceil`
+            ),
             "\\n"
         );
         graphemes
