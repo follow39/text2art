@@ -26,7 +26,7 @@ Simple library for translating text into ascii art. The library has several font
 <h1>Install</h1>
 
 ~~~
-text2art = "1.0.0"
+text2art = "1.0.2"
 ~~~
 
 ---
